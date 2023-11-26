@@ -208,3 +208,8 @@ document.getElementById("clear").addEventListener("click", () => {
     localStorage.removeItem("filters");
     location.reload();
 });
+
+document.getElementById("random").addEventListener("click", () => {
+    let random = Math.floor(Math.random() * filteredData.length);
+    window.open(`https://leetcode.com/problems/${filteredData[random].slug}`, "_blank");
+});
