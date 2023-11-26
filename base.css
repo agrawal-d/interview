@@ -1,0 +1,57 @@
+/* Divyanshu's minimal CSS */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  overflow-y: scroll;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#go {
+  width: 100px;
+  font-weight: bold;
+}
+
+.solved {
+  background-color: rgb(223, 239, 223);
+}
+
+.container {
+  width: 100%;
+  padding: 5px;
+  margin: 10px auto;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  margin: 15px 0px 15px 0px;
+}
+
+td {
+  padding: 5px 10px;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+.Easy {
+  color: green;
+}
+
+.Medium {
+  color: orange;
+}
+
+.Hard {
+  color: red;
+}
+
+summary {
+  cursor: pointer;
+}
