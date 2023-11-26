@@ -22,9 +22,9 @@
 let data = [];
 let filteredData = [];
 let initialFilters = {
-    title: "",
     difficulty: "",
     company: "",
+    pattern: "",
     unsolved: false
 }
 let filters = initialFilters;
@@ -54,16 +54,28 @@ function getAllCompanies() {
     return companies;
 }
 
+function getAllPatterns() {
+    let patterns = [];
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].pattern.length; j++) {
+            if (!patterns.includes(data[i].pattern[j])) {
+                patterns.push(data[i].pattern[j]);
+            }
+        }
+    }
+    return patterns;
+}
+
 function updateFilters() {
     let difficulty = document.getElementById("difficulty").value;
     let company = document.getElementById("company").value;
+    let pattern = document.getElementById("pattern").value;
     let unsolved = document.getElementById("unsolved").checked;
-    let title = document.getElementById("title").value;
 
     filters = {
-        title: title,
         difficulty: difficulty,
         company: company,
+        pattern: pattern,
         unsolved: unsolved
     };
 
@@ -115,18 +127,32 @@ function displayProblems() {
 
         row.insertCell(-1).innerHTML = filteredData[i].premium ? "Premium" : "Free";
 
+        const patterns = document.createElement("ul");
+        for (let j = 0; j < filteredData[i].pattern.length; j++) {
+            const pattern = document.createElement("li");
+            pattern.innerHTML = filteredData[i].pattern[j];
+            patterns.appendChild(pattern);
+        }
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.innerHTML = "Patterns";
+        details.appendChild(summary);
+        details.appendChild(patterns);
+        row.insertCell(-1).appendChild(details);
+
         const companies = document.createElement("ul");
         for (let j = 0; j < filteredData[i].companies.length; j++) {
             const company = document.createElement("li");
             company.innerHTML = filteredData[i].companies[j].name;
             companies.appendChild(company);
         }
-        const details = document.createElement("details");
-        const summary = document.createElement("summary");
-        summary.innerHTML = "Companies";
-        details.appendChild(summary);
-        details.appendChild(companies);
-        row.insertCell(-1).appendChild(details);
+
+        const details1 = document.createElement("details");
+        const summary1 = document.createElement("summary");
+        summary1.innerHTML = "Companies";
+        details1.appendChild(summary1);
+        details1.appendChild(companies);
+        row.insertCell(-1).appendChild(details1);
     }
 
     console.log("Render done");
@@ -135,15 +161,15 @@ function displayProblems() {
 function filterProblems() {
     console.log(filters);
     filteredData = data.filter((problem) => {
-        if (filters.name && !problem.title.toLowerCase().includes(filters.name.toLowerCase())) {
-            return false;
-        }
-
         if (filters.difficulty && problem.difficulty != filters.difficulty) {
             return false;
         }
 
         if (filters.company && !problem.companies.some((company) => company.name == filters.company)) {
+            return false;
+        }
+
+        if (filters.pattern && !problem.pattern.some((pattern) => pattern == filters.pattern)) {
             return false;
         }
 
@@ -157,12 +183,11 @@ function filterProblems() {
     return filteredData;
 }
 
-function updateInputs()
-{
+function updateInputs() {
     document.getElementById("difficulty").value = filters.difficulty;
     document.getElementById("company").value = filters.company;
+    document.getElementById("pattern").value = filters.pattern;
     document.getElementById("unsolved").checked = filters.unsolved;
-    document.getElementById("title").value = filters.title;
 }
 
 window.onload = async function () {
@@ -172,7 +197,7 @@ window.onload = async function () {
         filters = JSON.parse(localStorage.getItem("filters"));
         console.log("Loaded filters from local storage");
     }
-    
+
     const companySelect = document.getElementById("company");
     companySelect.appendChild(document.createElement("option"));
     const companies = getAllCompanies();
@@ -182,15 +207,20 @@ window.onload = async function () {
         option.innerHTML = companies[i];
         companySelect.appendChild(option);
     }
-    
+
+    const patternSelect = document.getElementById("pattern");
+    patternSelect.appendChild(document.createElement("option"));
+    const patterns = getAllPatterns();
+    for (let i = 0; i < patterns.length; i++) {
+        const option = document.createElement("option");
+        option.value = patterns[i];
+        option.innerHTML = patterns[i];
+        patternSelect.appendChild(option);
+    }
+
     updateInputs();
     displayProblems();
 };
-
-document.getElementById("go").addEventListener("click", () => {
-    updateFilters();
-    displayProblems();
-});
 
 document.getElementById("refresh").addEventListener("click", () => {
     let proceed = confirm("Are you sure you want to refresh? This will delete all your progress.");
@@ -213,3 +243,25 @@ document.getElementById("random").addEventListener("click", () => {
     let random = Math.floor(Math.random() * filteredData.length);
     window.open(`https://leetcode.com/problems/${filteredData[random].slug}`, "_blank");
 });
+
+document.getElementById("difficulty").addEventListener("change", () => {
+    go();
+});
+
+document.getElementById("company").addEventListener("change", () => {
+    go();
+});
+
+document.getElementById("pattern").addEventListener("change", () => {
+    go();
+});
+
+document.getElementById("unsolved").addEventListener("change", () => {
+    go();
+});
+
+
+function go() {
+    updateFilters();
+    displayProblems();
+}
