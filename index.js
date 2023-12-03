@@ -142,8 +142,6 @@ function displayProblems() {
         name.classList.add("problem-link")
         row.insertCell(-1).appendChild(name);
 
-        row.insertCell(-1).innerHTML = `<span class="${current.difficulty}">${current.difficulty}<\span>`;
-
         row.insertCell(-1).innerHTML = current.premium ? "Premium" : "Free";
 
         const patterns = document.createElement("ul");
@@ -172,6 +170,8 @@ function displayProblems() {
         details1.appendChild(summary1);
         details1.appendChild(companies);
         row.insertCell(-1).appendChild(details1);
+
+        row.insertCell(-1).innerHTML = `<span class="difficulty ${current.difficulty}">${current.difficulty}<\span>`;
     }
 
     document.getElementById("solved-count").innerHTML = solvedCount;

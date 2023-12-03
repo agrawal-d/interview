@@ -49,15 +49,28 @@ td {
   border: 1px solid rgb(219, 219, 219);
 }
 
-.Easy {
+.difficulty {
+  background-color: rgb(223, 223, 223, 1);
+  color: rgb(223, 223, 223, 1);
+  width: 80px;
+  display: inline-block;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.difficulty:hover {
+  background-color: transparent;
+}
+
+.Easy:hover {
   color: green;
 }
 
-.Medium {
+.Medium:hover {
   color: orange;
 }
 
-.Hard {
+.Hard:hover {
   color: red;
 }
 
