@@ -30,17 +30,29 @@ let initialFilters = {
 }
 let filters = initialFilters;
 
+function shuffleArray(array) {
+    const shuffledArray = array.slice();
+
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+
+    return shuffledArray;
+}
+
 async function downloadProblems() {
     if (localStorage.getItem("data")) {
         console.log("Loaded from local storage");
-        return JSON.parse(localStorage.getItem("data"));
+        return shuffleArray(JSON.parse(localStorage.getItem("data")));
     }
 
     let response = await fetch("./data.json");
     let data = await response.json();
 
-    localStorage.setItem("data", JSON.stringify(data.data));
-    return data.data;
+    shuf = shuffleArray(data.data);
+    localStorage.setItem("data", JSON.stringify(shuf));
+    return shuf;
 }
 
 function getAllCompanies() {
