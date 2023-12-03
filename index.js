@@ -19,6 +19,7 @@
 //       ]
 //     }
 // ]
+
 let data = [];
 let filteredData = [];
 let initialFilters = {
@@ -100,37 +101,43 @@ function toggleSolved(id) {
 
 function displayProblems() {
     const table = document.getElementById("problems");
+    let solvedCount = 0;
     table.innerHTML = "";
     filteredData = filterProblems();
     for (let i = 0; i < filteredData.length; i++) {
+        let current = filteredData[i];
         const row = table.insertRow(-1);
-        const solved = filteredData[i].solved === true;
+        const solved = current.solved === true;
         const solvedCheckbox = document.createElement("input");
+        solvedCheckbox.id = current.id;
         solvedCheckbox.type = "checkbox";
         solvedCheckbox.checked = solved;
-        row.insertCell(-1).appendChild(solvedCheckbox);
-        solvedCheckbox.onclick = () => toggleSolved(filteredData[i].id);
+        cell = row.insertCell(-1)
+        cell.appendChild(solvedCheckbox);
+        cell.onclick = () => toggleSolved(current.id);
 
         if (solved) {
             row.classList.add("solved");
+            solvedCount++;
         }
 
-        row.insertCell(-1).innerHTML = filteredData[i].id;
+        row.insertCell(-1).innerHTML = current.id;
 
         const name = document.createElement("a");
-        name.href = `https://leetcode.com/problems/${filteredData[i].slug}`;
-        name.innerHTML = filteredData[i].title;
+        name.href = `https://leetcode.com/problems/${current.slug}`;
+        name.innerHTML = current.title;
         name.target = "_blank";
+        name.classList.add("problem-link")
         row.insertCell(-1).appendChild(name);
 
-        row.insertCell(-1).innerHTML = `<span class="${filteredData[i].difficulty}">${filteredData[i].difficulty}<\span>`;
+        row.insertCell(-1).innerHTML = `<span class="${current.difficulty}">${current.difficulty}<\span>`;
 
-        row.insertCell(-1).innerHTML = filteredData[i].premium ? "Premium" : "Free";
+        row.insertCell(-1).innerHTML = current.premium ? "Premium" : "Free";
 
         const patterns = document.createElement("ul");
-        for (let j = 0; j < filteredData[i].pattern.length; j++) {
+        for (let j = 0; j < current.pattern.length; j++) {
             const pattern = document.createElement("li");
-            pattern.innerHTML = filteredData[i].pattern[j];
+            pattern.innerHTML = current.pattern[j];
             patterns.appendChild(pattern);
         }
         const details = document.createElement("details");
@@ -141,9 +148,9 @@ function displayProblems() {
         row.insertCell(-1).appendChild(details);
 
         const companies = document.createElement("ul");
-        for (let j = 0; j < filteredData[i].companies.length; j++) {
+        for (let j = 0; j < current.companies.length; j++) {
             const company = document.createElement("li");
-            company.innerHTML = filteredData[i].companies[j].name;
+            company.innerHTML = current.companies[j].name;
             companies.appendChild(company);
         }
 
@@ -155,6 +162,8 @@ function displayProblems() {
         row.insertCell(-1).appendChild(details1);
     }
 
+    document.getElementById("solved-count").innerHTML = solvedCount;
+    document.getElementById("total-count").innerHTML = data.length;
     console.log("Render done");
 }
 
@@ -222,6 +231,16 @@ window.onload = async function () {
     displayProblems();
 };
 
+function focusProblem(filteredIndex) {
+    let table = document.getElementById("problems");
+    for (let i = 0; i < table.rows.length; i++) {
+        table.rows[i].classList.remove("focus");
+    }
+    let row = table.rows[filteredIndex];
+    row.classList.add("focus");
+    row.scrollIntoView();
+}
+
 document.getElementById("refresh").addEventListener("click", () => {
     let proceed = confirm("Are you sure you want to refresh? This will delete all your progress.");
     if (!proceed) {
@@ -241,7 +260,8 @@ document.getElementById("clear").addEventListener("click", () => {
 
 document.getElementById("random").addEventListener("click", () => {
     let random = Math.floor(Math.random() * filteredData.length);
-    window.open(`https://leetcode.com/problems/${filteredData[random].slug}`, "_blank");
+    console.log(filteredData[random].slug);
+    focusProblem(random);
 });
 
 document.getElementById("difficulty").addEventListener("change", () => {

@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interview Questions</title>
-    <link rel="stylesheet" href="./base.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./base.css" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
     <div class="main container">
-        <h1>Interview Problems</h1>
-        <fieldset>
-            <button id="random">Random</button>
-            <label for="unolved">Unsolved</label>
-            <input type="checkbox" name="unsolved" id="unsolved">
-            <label for="company">Company</label>
-            <select name="company" id="company"></select>
-            <label for="pattern">Pattern</label>
-            <select name="pattern" id="pattern"></select>
-            <label for="difficulty">Difficulty</label>
-            <select name="difficulty" id="difficulty">
-                <option value="">All</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-            </select>
-            <button id="clear">Clear Filters</button>
-            <button id="refresh">Reset Progress</button>
-        </fieldset>
-        <table id="problems"></table>
-        <script src="./index.js"></script>
+      <div class="titlebar">
+        <h1>Interview Questions</h1>
+        <p>
+          Solved <span id="solved-count"></span> of
+          <span id="total-count"></span> problems
+        </p>
+        <hr />
+        <p>
+          UI created by agrawal-d. Thanks to leetcode.comand seanprashad.com
+        </p>
+      </div>
+      <div class="form">
+        <button id="random">Random</button>
+        <label for="unolved">Unsolved</label>
+        <input type="checkbox" name="unsolved" id="unsolved" />
+        <label for="company">Company</label>
+        <select name="company" id="company"></select>
+        <label for="pattern">Pattern</label>
+        <select name="pattern" id="pattern"></select>
+        <label for="difficulty">Difficulty</label>
+        <select name="difficulty" id="difficulty">
+          <option value="">All</option>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+        <button id="clear">Clear Filters</button>
+        <button id="refresh" class="float-right">Reset Progress</button>
+      </div>
+      <table id="problems"></table>
+      <script src="./index.js"></script>
     </div>
-</body>
+  </body>
 </html>
